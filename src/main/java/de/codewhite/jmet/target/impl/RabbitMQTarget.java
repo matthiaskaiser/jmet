@@ -25,7 +25,11 @@ public class RabbitMQTarget extends JMSTarget {
         RMQConnectionFactory implFactory = new RMQConnectionFactory();
 
         try {
-            implFactory.setUri("amqp://" + getUser() + ":" + getPassword() + "@" + getHost() + ":" + getPort() + "/" + getVhost());
+			String uri = "amqp://" + getUser() + ":" + getPassword() + "@" + getHost() + ":" + getPort();
+
+			if (!getVhost().equals("/")) {
+				uri = uri + "/" + getVhost();
+			}
             factory = implFactory;
             connection = factory.createConnection(getUser(), getPassword());
             session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
