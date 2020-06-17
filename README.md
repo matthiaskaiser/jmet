@@ -51,6 +51,8 @@ For creating gadget payloads JMET makes use of Chris Frohoffs' Ysoserial.
 # Dependencies
 JMET depends on a lot of libraries :(. For details see the maven pom file.
 
+JMET works with Java 8. Expect unpleasant surprises with Java 11.
+
 # Installation
 Just download jmet-0.1.0-all.jar from here or built it (see "Build instructions").
 
@@ -171,6 +173,8 @@ the following files:
 $ export MAVEN_OPTS=-Xss10m
 $ mvn clean compile assembly:single
 ```
+Using Java 11 can result in builds never finishing, always use Java 8!
+
 # Disclaimer
 JMET is a proof-of-concept tool for blackbox testing of JMS destinations.
 Please use this tool with care and only when authorized.
