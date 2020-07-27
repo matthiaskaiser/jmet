@@ -173,7 +173,8 @@ the following files:
 $ export MAVEN_OPTS=-Xss10m
 $ mvn clean compile assembly:single
 ```
-Using Java 11 can result in builds never finishing, always use Java 8!
+
+Using Java 11 can result in builds never finishing, always use Java 8! If you have multiple installations, check that the `JAVA_HOME` environment variable points to the right version!
 
 # Disclaimer
 JMET is a proof-of-concept tool for blackbox testing of JMS destinations.
